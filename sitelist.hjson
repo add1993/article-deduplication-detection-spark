@@ -1,0 +1,140 @@
+# This is a HJSON-File, so comments and so on can be used! See https://hjson.org/
+# Furthermore this is first of all the actual config file, but as default just filled with examples.
+{
+  # Every URL has to be in an array-object in "base_urls".
+  # The same URL in combination with the same crawler may only appear once in this array.
+  "base_urls" : [
+    {
+      "url": "https://www.laopinion.com.co/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.latarde.com.co/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "http://www.elnuevodia.com.co/nuevodia/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.yucatan.com.mx/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.yucatan.com.mx/seccion/merida"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.am.com.mx/celaya"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.am.com.mx/guanajuato"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.am.com.mx/irapauto"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.mural.com/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://www.eldiariodechihuahua.mx/Delicias/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    },
+    {
+      "url": "https://diario.mx/Nvo_Casas_Grandes/"
+      "crawler": "RecursiveCrawler",
+
+      "overwrite_heuristics": {
+        "meta_contains_article_keyword": true,
+        "og_type": false,
+        "linked_headlines": false,
+        "self_linked_headlines": false
+      },
+      "pass_heuristics_condition": "meta_contains_article_keyword"
+    }
+  ]
+}
