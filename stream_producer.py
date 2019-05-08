@@ -30,19 +30,24 @@ def connect_kafka_producer():
         return _producer
 
 if __name__== "__main__":
-    basePath = './data/nytimes.com'
-    prod = connect_kafka_producer();
-    for item in os.listdir(basePath):
-        if '.json' in item:
+    #basePath = './data/nytimes.com'
+    basePath = './data/am.com.mx'
+    prod = connect_kafka_producer()
+    dirList = os.listdir(basePath)
+    dirList.sort()
+    for item in dirList:
+        if '.json' not in item:
             continue
 
         filePath = basePath + '/' + item
         print(filePath)
-        text = open(filePath, 'r', encoding='utf-8').read()
-        article = NewsPlease.from_html(text, url=None)
-        print(article.text)
-        story = article.text
-        publish_message(prod, 'test', story)
+        text = ""
+        with open(filePath, encoding="utf8", errors='ignore') as f:
+            text += f.read()
+        print(text)
+        #text = open(filePath, 'r', encoding='utf-8').read()
+        #article = NewsPlease.from_html(text, url=None)
+        publish_message(prod, 'test', text)
         time.sleep(1)
         
     if prod is not None:
