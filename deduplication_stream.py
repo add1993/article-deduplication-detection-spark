@@ -27,7 +27,6 @@ from scipy.spatial import distance
 from pymongo import MongoClient 
 import json
 
-#brokers, topic = sys.argv[1:]
 print("Starting streaming program")
 sc = SparkContext("local[2]", "StreamData")
 sqlContext = SQLContext(sc)
@@ -45,7 +44,6 @@ collection = db.deduplication_collection
 consumer = KafkaConsumer('test', bootstrap_servers = ['localhost:9092'])
 
 mod = Model.load('english-ewt-ud-2.3-181115.udpipe')
-#mod = Model.load('spanish-ancora-ud-2.3-181115.udpipe')
 pipeline = Pipeline(mod, "tokenizer", Pipeline.DEFAULT, Pipeline.DEFAULT, "conllu")
 error = ProcessingError()
 
@@ -67,17 +65,13 @@ def checkSimilarity(d1, d2):
     l1p = len(d1['PROPN'])
     l2p = len(d2['PROPN'])
     file.write("\nJaccard similarity for PROPN: "+ str(m1)+"\n")
-    #file.write("typeofPROPN = "+type(d1['PROPN']))
     file.write(d1['PROPN'])
     file.write(d2['PROPN'])
     print("Jaccard similarity for PROPN: "+ str(m1))
-    #print(d1['PROPN'])
-    #print(d2['PROPN'])
+
     if( m1 >= 0.7):
         l1v = len(d1['VERB'])
         l2v = len(d2['VERB'])
-        #print(d1['VERB'])
-        #print(d2['VERB'])
         m2 = jaccardSim(d1['VERB'].split(","), d2['VERB'].split(","))
         print("Jaccard similarity for VERB: "+str(m2))
         file.write("\nJaccard similarity for VERB: "+str(m2)+"\n")
@@ -89,37 +83,27 @@ def checkSimilarity(d1, d2):
             return simi
         else:
             return m2
-            #return ((max(len(d1['PROPN']),len(d2['PROPN']))*m1)/(len(d1['PROPN']) + len(d2['PROPN']))) * ((max(len(d1['VERB']),len(d2['VERB']))*m2)/(len(d1['VERB']) + len(d2['VERB'])))
     else:
         return m1
         
-        
-        
 def preprocess(text):
-    print("startinng processing")
     processed = pipeline.process(text, error)
     print("processing")
     splitArr = processed.splitlines()
     refinedStr = ""
     for val in splitArr:
-        #print("string -> "+val)
         if (len(val) > 0 and val[0] == '#'):
             continue
         refinedStr += val+'\n'
         
     data = StringIO(refinedStr)
     df = pd.read_csv(data, sep='\t', header=None, names=["idx", "words", "processed_words", "word_type", "col_4", "col_5", "col_6", "col_7", "col_8", "col_9"])
-    #df.to_csv('df.csv')
-    #print(df)
     word_type = df["word_type"].unique()
-    #print("grammer = ",word_type)
     textDet= {}
     for type in word_type:
         tmp = df.loc[df['word_type'] == type]
         listStr = getString(np.array(tmp["words"]))
         textDet[type] = listStr
-        #print(textDet[type])
-        #print("Type = "+type)
     return textDet
 
     
@@ -130,7 +114,6 @@ for text in consumer:
     data = str(text.value, 'utf-8')
     if data == "":
         continue
-    #article = NewsPlease.from_html(data, url=None)
     try:
         articleDict = json.loads(data)
     except ValueError as e:
@@ -138,19 +121,12 @@ for text in consumer:
         continue
     
     dataDict = preprocess(articleDict['text'])
-    
-    #print(article.url)
-    #articleDict = article.get_serializable_dict()
-    #print(articleDict)
     articleDict['udpipe_data'] = dataDict
     jsonData = json.dumps(articleDict, indent=4,  sort_keys=True, default=str)
     count += 1
-    #print(jsonData)
     cursor = collection.find() 
     isDuplicate = False
-    #file = open("newlog.txt", "w+")
-    for record in cursor: 
-        #print(record['description'])
+    for record in cursor:
         if 'udpipe_data' in record.keys():
             storedDict = record['udpipe_data']
             similarityScore = checkSimilarity(dataDict, storedDict)
@@ -174,18 +150,12 @@ for text in consumer:
                 isDuplicate = True
                 numDup += 1
                 #break
-            #print(storedDict['ADJ'])
     
     if (not isDuplicate):
-        rec_id1 = collection.insert(articleDict) 
-    #article['udpipe_dict'] = jsonData
-    #print(article)
-    #dataset = sc.parallelize([{'id':iList[0], 'text':iList[1], 'label':iList[2]}]).toDF()
-    #dataset = dataset.withColumn("label", dataset["label"].cast(DoubleType()))
-    #dataset = dataset.withColumn("id", dataset["id"].cast(IntegerType()))
+        rec_id1 = collection.insert(articleDict)
+        
     print("total number of files streamed:",count)
     print("the number of similar documents found :",numDup)
-    
     
 ssc.start()
 ssc.awaitTermination()
