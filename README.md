@@ -12,10 +12,15 @@ Crawled Data : /news-please-repo/data
 
 5. Run the deduplication_stream.py by using spark-submit. Make sure mongodb is running and it has a database with name "Deduplication"  and a collection inside it with name "deduplication_collection". This script will read the kafka stream data through topic 'test'. This data will be processed and matched in the mongodb database.
 
+
+Windows Commands :
+
 start zookeeper : bin/zookeeper-server-start.sh config/zookeeper.properties
 
 start kafka server : bin/kafka-server-start.sh config/server.properties
 
 submit code : ./spark-submit.cmd  --packages org.apache.spark:spark-streaming-kafka-0-8_2.11:2.0.1 deduplication_stream.py 
+
+Starting zookeeper and kafka command is same for linux. For submitting code for linux use spark-submit.
 
 NOTE : Please use the required UDPIPE file depending on the laguage. e.g. english-ewt-ud-2.3-181115.udpipe
